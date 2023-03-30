@@ -74,11 +74,11 @@ private extension ListTableViewCell {
     func configureSubviewsConstraints() {
         NSLayoutConstraint.activate([
             repositoryName.topAnchor.constraint(equalTo: topAnchor, constant: 17),
-            repositoryName.leftAnchor.constraint(equalTo: leftAnchor, constant: 16),
+            repositoryName.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             gitUserName.topAnchor.constraint(equalTo: repositoryName.bottomAnchor),
-            gitUserName.leftAnchor.constraint(equalTo: leftAnchor, constant: 16),
+            gitUserName.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             arrowIconImageView.topAnchor.constraint(equalTo: topAnchor, constant: 17),
-            arrowIconImageView.rightAnchor.constraint(equalTo: rightAnchor, constant: -16),
+            arrowIconImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             arrowIconImageView.heightAnchor.constraint(equalToConstant: 16),
             arrowIconImageView.widthAnchor.constraint(equalToConstant: 16)
         ])
