@@ -10,7 +10,7 @@ import UIKit
 final class ListViewController: UIViewController, UISearchBarDelegate {
     
     let searchController = UISearchController()
-
+    
     private let listView: ListView = {
         let listView = ListView()
         return listView
@@ -27,6 +27,30 @@ final class ListViewController: UIViewController, UISearchBarDelegate {
     }
     
     override func viewDidLoad() {
+        setupNavigationBar()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        searchByGitUserName("")
+    }
+    
+    override func loadView() {
+        self.view = listView
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let text = searchBar.text
+        self.searchController.isActive = false
+        searchBar.text = text
+        searchByGitUserName(text ?? "")
+        //TODO: Activate loading spinner
+    }
+    
+    @objc private func navigateToSettings(sender: UIButton) {
+        print("navigateToSettings")
+    }
+    
+    private func setupNavigationBar() {
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.title = "Repositories"
         self.navigationController?.navigationBar.scrollEdgeAppearance = UINavigationBarAppearance()
@@ -37,30 +61,32 @@ final class ListViewController: UIViewController, UISearchBarDelegate {
         searchController.searchBar.placeholder = "Type a GitHub user name"
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        searchController.searchBar.endEditing(true)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        service.fetchList { repositories in
-            DispatchQueue.main.async {
-                self.listView.updateView(with: repositories)
-            }
+    //TODO: Integration
+    private func searchByGitUserName(_ name: String) {
+        service.fetchList { [weak self] list in
+            self?.listView.updateView(with: list)
         }
     }
-    
-    override func loadView() {
-        self.view = listView
-    }
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        let text = searchBar.text
-        print("search text: \(text)")
-        self.searchController.isActive = false
-        searchBar.text = text
-    }
+}
 
-    @objc private func navigateToSettings(sender: UIButton) {
-        print("navigateToSettings")
+private extension ListViewController {
+    func showSearchingFeedback() {
+        listView.showLoadingFeedbackSpinner()
+        listView.showSearchingRepositoriesFeedbackLabel()
+    }
+    
+    func hideSearchingFeedback() {
+        listView.hideLoadingFeedbackSpinner()
+        listView.hideSearchingRepositoriesFeedbackLabel()
+    }
+    
+    func showNoRepositoriesFoundFeedback() {
+        listView.showNoRepositoriesFoundFeedbackTitleLabel()
+        listView.showNoRepositoriesFoundFeedbackSubTitleLabel()
+    }
+    
+    func hideNoRepositoriesFoundFeedback() {
+        listView.hideNoRepositoriesFoundFeedbackTitleLabel()
+        listView.hideNoRepositoriesFoundFeedbackSubTitleLabel()
     }
 }
