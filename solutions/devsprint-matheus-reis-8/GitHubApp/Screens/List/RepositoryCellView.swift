@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ListTableViewCell: UITableViewCell {
+class RepositoryCellView: UITableViewCell {
     
     private lazy var repositoryName: UILabel = {
         let label = UILabel()
@@ -18,7 +18,7 @@ class ListTableViewCell: UITableViewCell {
         return label
     }()
     
-    private lazy var gitUserName: UILabel = {
+    private lazy var repositoryOwner: UILabel = {
         let label = UILabel()
         label.text = "git-user-name"
         label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
@@ -51,14 +51,14 @@ class ListTableViewCell: UITableViewCell {
     }
 }
 
-extension ListTableViewCell {
+extension RepositoryCellView {
     func settingCells(_ repository: Repository) {
         self.repositoryName.text = repository.name
-        self.gitUserName.text = repository.userName
+        self.repositoryOwner.text = repository.owner
     }
 }
 
-private extension ListTableViewCell {
+private extension RepositoryCellView {
     func setupViews() {
         self.backgroundColor = .white
         self.configureSubviews()
@@ -67,7 +67,7 @@ private extension ListTableViewCell {
     
     func configureSubviews() {
         addSubview(repositoryName)
-        addSubview(gitUserName)
+        addSubview(repositoryOwner)
         addSubview(arrowIconImageView)
     }
     
@@ -75,8 +75,8 @@ private extension ListTableViewCell {
         NSLayoutConstraint.activate([
             repositoryName.topAnchor.constraint(equalTo: topAnchor, constant: 17),
             repositoryName.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            gitUserName.topAnchor.constraint(equalTo: repositoryName.bottomAnchor),
-            gitUserName.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            repositoryOwner.topAnchor.constraint(equalTo: repositoryName.bottomAnchor),
+            repositoryOwner.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             arrowIconImageView.topAnchor.constraint(equalTo: topAnchor, constant: 17),
             arrowIconImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             arrowIconImageView.heightAnchor.constraint(equalToConstant: 16),
