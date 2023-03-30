@@ -8,7 +8,6 @@
 import UIKit
 
 struct ListViewConfiguration {
-
     let listItems: [String]
 }
 
@@ -19,7 +18,6 @@ final class ListView: UIView {
     private var listItems: [String] = []
 
     private lazy var tableView: UITableView = {
-
         let tableView = UITableView(frame: .zero)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: self.listViewCellIdentifier)
@@ -28,9 +26,7 @@ final class ListView: UIView {
     }()
 
     init() {
-
         super.init(frame: .zero)
-
         self.setupViews()
     }
 
@@ -40,24 +36,19 @@ final class ListView: UIView {
 }
 
 private extension ListView {
-
     func setupViews() {
-
         self.backgroundColor = .white
-
         self.configureSubviews()
         self.configureSubviewsConstraints()
     }
 
     func configureSubviews() {
-
         self.addSubview(self.tableView)
+        self.tableView.keyboardDismissMode = .onDrag
     }
 
     func configureSubviewsConstraints() {
-
         NSLayoutConstraint.activate([
-
             self.tableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             self.tableView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             self.tableView.topAnchor.constraint(equalTo: self.topAnchor),
@@ -66,10 +57,11 @@ private extension ListView {
     }
 }
 
+
+
 extension ListView {
-
     func updateView(with repositories: [String]) {
-
+        tableView.backgroundColor = .white
         self.listItems = repositories
         self.tableView.reloadData()
     }
@@ -78,12 +70,10 @@ extension ListView {
 extension ListView: UITableViewDataSource {
 
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-
         return self.listItems.count
     }
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
         let cell = tableView.dequeueReusableCell(withIdentifier: self.listViewCellIdentifier)!
         cell.textLabel?.text = self.listItems[indexPath.row]
         return cell
