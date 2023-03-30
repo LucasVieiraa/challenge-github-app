@@ -55,7 +55,7 @@ final class ListViewController: UIViewController, UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         let text = searchBar.text
-        print(text)
+        print("search text: \(text)")
         self.searchController.isActive = false
         searchBar.text = text
     }

@@ -15,13 +15,14 @@ final class ListView: UIView {
 
     private let listViewCellIdentifier = "ListViewCellIdentifier"
 
-    private var listItems: [String] = []
+    private var listItems: [Repository] = []
 
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: self.listViewCellIdentifier)
+        tableView.register(ListTableViewCell.self, forCellReuseIdentifier: "ListTableViewCell")
         tableView.dataSource = self
+        tableView.delegate = self
         return tableView
     }()
 
@@ -44,7 +45,6 @@ private extension ListView {
 
     func configureSubviews() {
         self.addSubview(self.tableView)
-        self.tableView.keyboardDismissMode = .onDrag
     }
 
     func configureSubviewsConstraints() {
@@ -57,10 +57,8 @@ private extension ListView {
     }
 }
 
-
-
 extension ListView {
-    func updateView(with repositories: [String]) {
+    func updateView(with repositories: [Repository]) {
         tableView.backgroundColor = .white
         self.listItems = repositories
         self.tableView.reloadData()
@@ -68,15 +66,20 @@ extension ListView {
 }
 
 extension ListView: UITableViewDataSource {
-
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.listItems.count
     }
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: self.listViewCellIdentifier)!
-        cell.textLabel?.text = self.listItems[indexPath.row]
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ListTableViewCell") as? ListTableViewCell else { fatalError("Generate cell error") }
+        cell.settingCells(self.listItems[indexPath.row])
         return cell
+    }
+}
+
+extension ListView: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 70
     }
 }
 
