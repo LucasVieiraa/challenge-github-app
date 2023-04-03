@@ -16,6 +16,16 @@ final class ListViewController: UIViewController {
         return listView
     }()
     
+    private let loadingView: LoadingView = {
+        let loadingView = LoadingView()
+        return loadingView
+    }()
+    
+    private let emptyView: EmptyView = {
+        let emptyView = EmptyView()
+        return emptyView
+    }()
+    
     private let service = Service()
     
     init() {
@@ -75,25 +85,36 @@ extension ListViewController: UISearchBarDelegate {
     }
 }
 
-
 private extension ListViewController {
-    func showSearchingFeedback() {
-        listView.showLoadingFeedbackSpinner()
-        listView.showSearchingRepositoriesFeedbackLabel()
+    func showLoadingViewFeedback(with configuration: LoadingViewConfiguration? = nil) {
+        self.view = loadingView
+        loadingView.showLoadingViewTitleLabel()
+        loadingView.showLoadingViewSpinnerActivityIndicator()
+        
+        if let configuration {
+            loadingView.updateView(with: configuration)
+        }
     }
     
-    func hideSearchingFeedback() {
-        listView.hideLoadingFeedbackSpinner()
-        listView.hideSearchingRepositoriesFeedbackLabel()
+    func showEmptyViewFeedback(with configuration: EmptyViewConfiguration? = nil) {
+        self.view = emptyView
+        emptyView.showEmptyViewTitleLabel()
+        emptyView.showEmptyViewSubtitleLabel()
+        
+        if let configuration {
+            emptyView.updateView(with: configuration)
+        }
     }
     
-    func showNoRepositoriesFoundFeedback() {
-        listView.showNoRepositoriesFoundFeedbackTitleLabel()
-        listView.showNoRepositoriesFoundFeedbackSubTitleLabel()
+    func hideLoadingViewFeedback() {
+        self.view = listView
+        loadingView.showLoadingViewTitleLabel()
+        loadingView.showLoadingViewSpinnerActivityIndicator()
     }
     
-    func hideNoRepositoriesFoundFeedback() {
-        listView.hideNoRepositoriesFoundFeedbackTitleLabel()
-        listView.hideNoRepositoriesFoundFeedbackSubTitleLabel()
+    func hideEmptyViewFeedback() {
+        self.view = listView
+        emptyView.hideEmptyViewTitleLabel()
+        emptyView.hideEmptyViewSubtitleLabel()
     }
 }
