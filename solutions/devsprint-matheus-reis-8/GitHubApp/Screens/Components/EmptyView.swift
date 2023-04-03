@@ -42,7 +42,7 @@ final class EmptyView: UIView {
     }
 }
 
-extension EmptyView {
+private extension EmptyView {
     func setupViews() {
         self.backgroundColor = .white
         self.configureSubviews()

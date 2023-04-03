@@ -13,23 +13,19 @@ struct ListViewConfiguration {
 
 final class ListView: UIView {
     
-    private var listItems: [Repository] = []
-
-    private lazy var tableView: UITableView = {
+    lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero)
+        tableView.backgroundColor = .white
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(RepositoryCellView.self, forCellReuseIdentifier: "RepositoryCellView")
-        tableView.dataSource = self
-        tableView.delegate = self
         return tableView
     }()
-
 
     init() {
         super.init(frame: .zero)
         self.setupViews()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -41,11 +37,11 @@ private extension ListView {
         self.configureSubviews()
         self.configureSubviewsConstraints()
     }
-
+    
     func configureSubviews() {
         self.addSubview(self.tableView)
     }
-
+    
     func configureSubviewsConstraints() {
         NSLayoutConstraint.activate([
             self.tableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
@@ -55,30 +51,3 @@ private extension ListView {
         ])
     }
 }
-
-extension ListView {
-    func updateView(with repositories: [Repository]) {
-        tableView.backgroundColor = .white
-        self.listItems = repositories
-        self.tableView.reloadData()
-    }
-}
-
-extension ListView: UITableViewDataSource {
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.listItems.count
-    }
-
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "RepositoryCellView") as? RepositoryCellView else { fatalError("Generate cell error") }
-        cell.settingCells(self.listItems[indexPath.row])
-        return cell
-    }
-}
-
-extension ListView: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 70
-    }
-}
-
