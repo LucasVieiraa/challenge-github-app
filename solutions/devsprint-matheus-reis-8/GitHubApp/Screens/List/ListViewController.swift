@@ -112,12 +112,15 @@ extension ListViewController: UISearchBarDelegate {
         navigationBarAppearance.configureWithOpaqueBackground()
         navigationBarAppearance.backgroundColor = UIColor(red: 245, green: 245, blue: 245)
         
+        
         self.navigationController?.navigationBar.scrollEdgeAppearance = navigationBarAppearance
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.title = "Repositories"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Settings", style: .plain, target: self, action: #selector(navigateToSettings))
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: nil, action: .none)
         self.navigationItem.searchController = searchController
-
+        
+        
         searchController.searchBar.delegate = self
         searchController.searchBar.placeholder = "Type a GitHub user name"
     }
@@ -145,7 +148,7 @@ extension ListViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(listItems[indexPath.row])
-        //navigationController?.pushViewController(DetailViewController(nibName: "DetailViewController", bundle: nil), animated: true)
+        let detailViewController = DetailViewController.instance(listItems[indexPath.row])
+        navigationController?.pushViewController(detailViewController, animated: true)
     }
 }
